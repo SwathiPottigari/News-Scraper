@@ -3,6 +3,9 @@ var axios=require("axios");
 var mongoose=require("mongoose");
 var cheerio = require("cheerio");
 
+// Set Handlebars.
+var exphbs = require("express-handlebars");
+
 var app=express();
 
 // var db=require("./models");
@@ -19,6 +22,9 @@ app.use(express.json());
 
 // It uses the static file path when deployed in HEROKU
 app.use(express.static("public"));
+
+app.engine("handlebars",exphbs({defaultLayout:"main"}));
+app.set("view engine", "handlebars");
 
 // This uses the routes folder files for routing
 app.use("/",routes);
