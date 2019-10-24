@@ -53,6 +53,13 @@ router.get("/articlesSaved", function (req, res) {
 
 });
 
+// This updates the Article when it is saved
+router.put("/saveArticle/:id",function(req,res){
+db.Article.findOneAndUpdate({_id:req.params.articleId},{$set:{isSaved:req.body.isSaved}}).then(function(result){
+  res.json({isSuccess:true});
+}).catch(function(error){res.json(error)});
+});
+
 // This API gets all the Notes related the specific id
 router.get("/getNotes/:id", function (req, res) {
   db.Article.findOne({ _id: req.params.id }).populate("notes").then(function (results) {
