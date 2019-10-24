@@ -1,7 +1,6 @@
 var express=require("express");
-var axios=require("axios");
 var mongoose=require("mongoose");
-var cheerio = require("cheerio");
+
 
 // Set Handlebars.
 var exphbs = require("express-handlebars");
@@ -10,6 +9,7 @@ var app=express();
 
 // var db=require("./models");
 var routes=require("./routes/htmlRoutes");
+var apiRoutes=require("./routes/apiRoutes");
 
 var PORT=process.env.PORT||3000;
 
@@ -28,6 +28,7 @@ app.set("view engine", "handlebars");
 
 // This uses the routes folder files for routing
 app.use("/",routes);
+app.use(apiRoutes);
 
 // Starts the server
 app.listen(PORT,function(){

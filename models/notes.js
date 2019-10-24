@@ -3,7 +3,7 @@ const Schema=mongoose.Schema;
 
 const NotesSchema=new Schema({
     note:{
-        type:Text
+        type:String
     }
 });
 
