@@ -74,9 +74,13 @@ router.post("/saveNotes/:id", function (req, res) {
 // Deletes the specific article
 router.get("/deleteArticle/:id",function(req,res){
   db.Article.findByIdAndDelete(req.params.id).populate("notes").then(function(result){
-    console.log(result.notes);
+    console.log(result.notes[0]._id);
     // res.json(result);
-   db.Notes.deleteMany(result.notes, function(err) {res.json(err)})
+    db.Notes.findOneAndDelete({_id:result.notes[0]._id})
+    result.notes.forEach(element => {
+      console.log(element);
+    });
+  //  db.Notes.deleteMany(result.notes, function(err) {res.json(err)})
 })
 });
 
