@@ -15,8 +15,8 @@ router.get("/scrape", function (req, res) {
         .text();
       result.url = $(this).attr("href");
       result.summary = $(this).children("p")
-        .text()
-      result.notes = [];
+        .text();
+
       if (result.headline) {
         // console.log(result);
         db.Article.create(result)
@@ -45,7 +45,7 @@ router.get("/articles", function (req, res) {
 
 // This API gets all the Articles are saved
 router.get("/articlesSaved", function (req, res) {
-  db.Article.find({ isSaved: true }).populate("Notes").then(function (results) {
+  db.Article.find({ isSaved: true }).populate("notes").then(function (results) {
     res.json(results);
   }).catch(function (error) {
     res.json(error);
@@ -55,7 +55,7 @@ router.get("/articlesSaved", function (req, res) {
 
 // This API gets all the Notes related the specific id
 router.get("/getNotes/:id", function (req, res) {
-  db.Article.findOne({ _id: req.params.id }).populate("Notes").then(function (results) {
+  db.Article.findOne({ _id: req.params.id }).populate("notes").then(function (results) {
     res.json(results.notes)
   })
 });
@@ -70,5 +70,15 @@ router.post("/saveNotes/:id", function (req, res) {
     res.json(error);
   });
 });
+
+// Deletes the specific article
+router.get("/deleteArticle/:id",function(req,res){
+  db.Article.findByIdAndDelete(req.params.id).populate("notes").then(function(result){
+    console.log(result.notes);
+    // res.json(result);
+   db.Notes.deleteMany(result.notes, function(err) {res.json(err)})
+})
+});
+
 
 module.exports = router;
