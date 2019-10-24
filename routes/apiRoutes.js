@@ -62,27 +62,36 @@ router.get("/getNotes/:id", function (req, res) {
 
 // This API creates the notes for a specific Article and returns the updated Article
 router.post("/saveNotes/:id", function (req, res) {
-  db.Notes.create(req.body).then(function(notesDB){
-    return db.Article.findOneAndUpdate({_id:req.params.id},{$push :{notes:notesDB._id}},{new:true})
-  }).then(function(article){
+  db.Notes.create(req.body).then(function (notesDB) {
+    return db.Article.findOneAndUpdate({ _id: req.params.id }, { $push: { notes: notesDB._id } }, { new: true })
+  }).then(function (article) {
     res.json(article);
-  }).catch(function(error){
+  }).catch(function (error) {
     res.json(error);
   });
 });
 
 // Deletes the specific article
-router.get("/deleteArticle/:id",function(req,res){
-  db.Article.findByIdAndDelete(req.params.id).populate("notes").then(function(result){
-    console.log(result.notes[0]._id);
-    // res.json(result);
-    db.Notes.findOneAndDelete({_id:result.notes[0]._id})
+router.get("/deleteArticle/:id", function (req, res) {
+  db.Article.findByIdAndDelete(req.params.id).then(function (result) {
     result.notes.forEach(element => {
-      console.log(element);
+        db.Notes.findOneAndDelete({ _id: element }).then(function (notesResult) {
+          return (notesResult);
+        }).catch(function (error) { res.json(error) });
     });
-  //  db.Notes.deleteMany(result.notes, function(err) {res.json(err)})
-})
+    res.json({isSuccess:true});
+  }).catch(function (error) { res.json(error) });
 });
 
+// This API deletes the specific notes
+router.get("/deleteNotes/:notesId/:articleId",function(req,res){
+
+  db.Notes.findByIdAndDelete(req.params.notesId).then(function(result){
+
+    db.Article.findOneAndUpdate({_id:req.params.articleId},{$pull:{notes:req.params.notesId}}).catch(function(error){res.json(error)});
+    res.json({isSuccess:true});
+  }).catch(function(error){res.json(error)});
+
+});
 
 module.exports = router;
