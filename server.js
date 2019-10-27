@@ -27,7 +27,7 @@ app.engine("handlebars",exphbs({defaultLayout:"main"}));
 app.set("view engine", "handlebars");
 
 // This uses the routes folder files for routing
-app.use("/",routes);
+// app.use("/",routes);
 app.use(apiRoutes);
 
 // Starts the server

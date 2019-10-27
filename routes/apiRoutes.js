@@ -4,6 +4,10 @@ var axios = require("axios");
 var cheerio = require("cheerio");
 var db = require("../models");
 
+router.get("/", function (req, res) {
+  getArticles(req,res);     
+});
+
 // This API scrapes the website and stores the data into the DB
 router.get("/scrape", function (req, res) {
   axios.get("https://www.nytimes.com/").then(function (response) {
@@ -36,11 +40,8 @@ router.get("/scrape", function (req, res) {
 
 // This API gets all the articles that are not saved
 router.get("/articles", function (req, res) {
-  db.Article.find({ isSaved: false }).then(function (results) {
-    res.json(results);
-  }).catch(function (error) {
-    res.json(error);
-  });
+ let articles=getArticles(req,res);
+  res.render("index",articles);
 });
 
 // This API gets all the Articles are saved
@@ -54,10 +55,10 @@ router.get("/articlesSaved", function (req, res) {
 });
 
 // This updates the Article when it is saved
-router.put("/saveArticle/:id",function(req,res){
-db.Article.findOneAndUpdate({_id:req.params.articleId},{$set:{isSaved:req.body.isSaved}}).then(function(result){
-  res.json({isSuccess:true});
-}).catch(function(error){res.json(error)});
+router.put("/saveArticle/:id", function (req, res) {
+  db.Article.findOneAndUpdate({ _id: req.params.articleId }, { $set: { isSaved: req.body.isSaved } }).then(function (result) {
+    res.json({ isSuccess: true });
+  }).catch(function (error) { res.json(error) });
 });
 
 // This API gets all the Notes related the specific id
@@ -82,23 +83,37 @@ router.post("/saveNotes/:id", function (req, res) {
 router.get("/deleteArticle/:id", function (req, res) {
   db.Article.findByIdAndDelete(req.params.id).then(function (result) {
     result.notes.forEach(element => {
-        db.Notes.findOneAndDelete({ _id: element }).then(function (notesResult) {
-          return (notesResult);
-        }).catch(function (error) { res.json(error) });
+      db.Notes.findOneAndDelete({ _id: element }).then(function (notesResult) {
+        return (notesResult);
+      }).catch(function (error) { res.json(error) });
     });
-    res.json({isSuccess:true});
+    res.json({ isSuccess: true });
   }).catch(function (error) { res.json(error) });
 });
 
 // This API deletes the specific notes
-router.get("/deleteNotes/:notesId/:articleId",function(req,res){
+router.get("/deleteNotes/:notesId/:articleId", function (req, res) {
 
-  db.Notes.findByIdAndDelete(req.params.notesId).then(function(result){
+  db.Notes.findByIdAndDelete(req.params.notesId).then(function (result) {
 
-    db.Article.findOneAndUpdate({_id:req.params.articleId},{$pull:{notes:req.params.notesId}}).catch(function(error){res.json(error)});
-    res.json({isSuccess:true});
-  }).catch(function(error){res.json(error)});
+    db.Article.findOneAndUpdate({ _id: req.params.articleId }, { $pull: { notes: req.params.notesId } }).catch(function (error) { res.json(error) });
+    res.json({ isSuccess: true });
+  }).catch(function (error) { res.json(error) });
 
 });
+
+function getArticles(req,res){
+  db.Article.find({ isSaved: false }).then(function (results) {
+    let articlesArray={
+      saved:false,
+      articles:results
+    };    
+    console.log(articlesArray);
+    // return (results);
+    res.render("index",articlesArray); 
+  }).catch(function (error) {
+    res.json(error);
+  });
+}
 
 module.exports = router;

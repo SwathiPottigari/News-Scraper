@@ -1,9 +1,9 @@
-var express=require("express");
-var router=express.Router();
-var path=require("path");
+// var express=require("express");
+// var router=express.Router();
+// var path=require("path");
+// var axios=require("axios");
+// var apiRoutes=require("./apiRoutes");
 
-router.get("/",function(req,res){
-    res.render("index");
-});
 
-module.exports=router;
+
+// module.exports=router;
