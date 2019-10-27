@@ -84,7 +84,8 @@ router.post("/saveNotes/:id", function (req, res) {
 });
 
 // Deletes the specific article
-router.get("/deleteArticle/:id", function (req, res) {
+router.delete("/deleteArticle/:id", function (req, res) {
+  console.log("Entered the function");
   db.Article.findByIdAndDelete(req.params.id).then(function (result) {
     result.notes.forEach(element => {
       db.Notes.findOneAndDelete({ _id: element }).then(function (notesResult) {
