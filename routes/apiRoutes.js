@@ -47,7 +47,11 @@ router.get("/articles", function (req, res) {
 // This API gets all the Articles are saved
 router.get("/articlesSaved", function (req, res) {
   db.Article.find({ isSaved: true }).populate("notes").then(function (results) {
-    res.json(results);
+    let articles = {
+      saved: true,
+      articles: results
+    };
+    res.render("index", articles);
   }).catch(function (error) {
     res.json(error);
   });
