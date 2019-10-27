@@ -5,30 +5,32 @@
       <h3>
         <a class="article-link" target="_blank" rel="noopener noreferrer" href={{this.url}}>{{this.headline}}</a>
         <a class="btn btn-danger delete">Delete From Saved</a>
-        <a class="btn btn-info notes">Article Notes</a>
+        <a class="btn btn-info notes" data-toggle="modal" data-target='#notes{{this._id}}'>Article Notes</a>
       </h3>
     </div>
-    <div class="card-body" data-toggle="modal" data-target="#exampleModal">{{this.summary}}</div>
+    <div class="card-body">{{this.summary}}</div>
   </div>
-  {{/each}}
-</div>
 
-<div class="bootbox modal fade show" id="notes"+{{this._id}} tabindex="-1" role="dialog" style="padding-right: 17px; display: block;">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-body"><button type="button" class="bootbox-close-button close" data-dismiss="modal"
-          aria-hidden="true" style="margin-top: -10px;">×</button>
-        <div class="bootbox-body">
-          <div class="container-fluid text-center">
-            <h4>Notes For Article: 5db5e06cc815b70015f7a393</h4>
-            <hr>
-            <ul class="list-group note-container">
-              <li class="list-group-item">No notes for this article yet.</li>
-            </ul><textarea placeholder="New Note" rows="4" cols="60"></textarea><button
-              class="btn btn-success save">Save Note</button>
-          </div>
+  <div class="modal fade" id='notes{{this._id}}' tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Notes:</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          {{>notesArticle}}
+          <textarea placeholder="New Note" rows="4" cols="60"></textarea>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary">Save changes</button>
         </div>
       </div>
     </div>
   </div>
+
+  {{/each}}
 </div>

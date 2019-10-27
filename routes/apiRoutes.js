@@ -68,7 +68,11 @@ router.put("/saveArticle/:id", function (req, res) {
 // This API gets all the Notes related the specific id
 router.get("/getNotes/:id", function (req, res) {
   db.Article.findOne({ _id: req.params.id }).populate("notes").then(function (results) {
+  //  let notes={
+  //  notes:results.notes
+  //   }
     res.json(results.notes)
+    // res.render("index",notes);
   })
 });
 
@@ -97,7 +101,7 @@ router.delete("/deleteArticle/:id", function (req, res) {
 });
 
 // This API deletes the specific notes
-router.get("/deleteNotes/:notesId/:articleId", function (req, res) {
+router.delete("/deleteNotes/:notesId/:articleId", function (req, res) {
 
   db.Notes.findByIdAndDelete(req.params.notesId).then(function (result) {
 

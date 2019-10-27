@@ -19,4 +19,16 @@ $(function(){
             console.log(error);
         });
     });
+
+    // $(".notes").click(function(event){
+    //     let id=$(this).parent().parent().parent().attr("data-id");
+    //     $.ajax("/getNotes/"+id).then(function(results){
+    //         console.log(results);
+    //         // location.reload(results);
+    //         // alert("Hello");
+    //          return (results);
+    //     }).catch(function(error){
+    //         console.log(error);
+    //     });
+    // });
 });
