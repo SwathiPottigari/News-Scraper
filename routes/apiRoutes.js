@@ -5,7 +5,7 @@ var cheerio = require("cheerio");
 var db = require("../models");
 
 router.get("/", function (req, res) {
-  getArticles(req,res);     
+  getArticles(req, res);
 });
 
 // This API scrapes the website and stores the data into the DB
@@ -40,8 +40,8 @@ router.get("/scrape", function (req, res) {
 
 // This API gets all the articles that are not saved
 router.get("/articles", function (req, res) {
- let articles=getArticles(req,res);
-  res.render("index",articles);
+  let articles = getArticles(req, res);
+  res.render("index", articles);
 });
 
 // This API gets all the Articles are saved
@@ -56,7 +56,7 @@ router.get("/articlesSaved", function (req, res) {
 
 // This updates the Article when it is saved
 router.put("/saveArticle/:id", function (req, res) {
-  db.Article.findOneAndUpdate({ _id: req.params.articleId }, { $set: { isSaved: req.body.isSaved } }).then(function (result) {
+  db.Article.findOneAndUpdate({ _id: req.params.id }, { $set: { isSaved: true } }).then(function (result) {
     res.json({ isSuccess: true });
   }).catch(function (error) { res.json(error) });
 });
@@ -102,15 +102,15 @@ router.get("/deleteNotes/:notesId/:articleId", function (req, res) {
 
 });
 
-function getArticles(req,res){
+function getArticles(req, res) {
   db.Article.find({ isSaved: false }).then(function (results) {
-    let articlesArray={
-      saved:false,
-      articles:results
-    };    
-    console.log(articlesArray);
+    let articlesArray = {
+      saved: false,
+      articles: results
+    };
     // return (results);
-    res.render("index",articlesArray); 
+    res.render("index", articlesArray);
+    // res.json(articlesArray);
   }).catch(function (error) {
     res.json(error);
   });

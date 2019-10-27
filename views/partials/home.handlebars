@@ -1,15 +1,14 @@
 <div class="container-fluid article-container">
-        <div data-_id="5db4a50c6f81d100157c0a16" class="card">
+    {{#each articles}}
+        <div data-id={{this._id}} class="card">
             <div class="card-header">
                 <h3>
                     <a class="article-link" target="_blank" rel="noopener noreferrer"
-                        href="https://www.nytimes.com/2019/10/26/opinion/sunday/doctors-addiction-trust.html">Choosing
-                        to Be Vulnerable With My Patients</a>
+                        href={{this.url}}>{{this.headline}}</a>
                     <a class="btn btn-success save">Save Article</a>
                 </h3>
             </div>
-            <div class="card-body">Doctors don’t like to let their guard down. But sometimes good things happen when
-                they do.</div>
+            <div class="card-body">{{this.summary}}</div>
         </div>
-
+{{/each}}
     </div>
