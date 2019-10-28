@@ -1,6 +1,6 @@
 <ul class="list-group note-container">
     {{#each this.notes}}
-    <li class="list-group-item note" data-id={{this._id}}>{{this.note}}<button class="btn btn-danger note-delete">x</button>
+    <li class="list-group-item note">{{this.note}}<button class="btn btn-danger note-delete" data-id={{this._id}}>x</button>
     </li>
     {{/each}}
 </ul>

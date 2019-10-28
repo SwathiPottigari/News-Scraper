@@ -31,4 +31,14 @@ $(function(){
     //         console.log(error);
     //     });
     // });
+
+    $(".note-delete").click(function(event){
+        let notesId=$(this).attr('data-id');
+        let articleId=$(this).closest(".modal").attr("id").split("-")[1];
+        $.ajax("/deleteNotes/"+notesId+"/"+articleId,{
+            type:"DELETE"
+        }).then(function(results){
+            location.reload();
+        }).catch(function(error){console.log(error)});
+    });
 });
