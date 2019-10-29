@@ -4,7 +4,7 @@ var axios = require("axios");
 var cheerio = require("cheerio");
 var db = require("../models");
 
-router.get("/", function (req, res) {
+router.get("/", function (req, res) {  
   getArticles(req, res);
 });
 
@@ -34,15 +34,15 @@ router.get("/scrape", function (req, res) {
           });
       }
     });
+    res.redirect("/");
   }).catch(error => console.log(error));
-  res.send("Scrapped");
 });
 
 // This API gets all the articles that are not saved
-router.get("/articles", function (req, res) {
-  let articles = getArticles(req, res);
-  res.render("index", articles);
-});
+// router.get("/articles", function (req, res) {
+//   let articles = getArticles(req, res);
+//   res.render("index", articles);
+// });
 
 // This API gets all the Articles are saved
 router.get("/articlesSaved", function (req, res) {
@@ -118,6 +118,7 @@ function getArticles(req, res) {
       articles: results
     };
     // return (results);
+    // console.log("entered");
     res.render("index", articlesArray);
     // res.json(articlesArray);
   }).catch(function (error) {
