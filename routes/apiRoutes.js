@@ -4,7 +4,7 @@ var axios = require("axios");
 var cheerio = require("cheerio");
 var db = require("../models");
 
-router.get("/", function (req, res) {  
+router.get("/", function (req, res) {
   getArticles(req, res);
 });
 
@@ -68,9 +68,9 @@ router.put("/saveArticle/:id", function (req, res) {
 // This API gets all the Notes related the specific id
 router.get("/getNotes/:id", function (req, res) {
   db.Article.findOne({ _id: req.params.id }).populate("notes").then(function (results) {
-  //  let notes={
-  //  notes:results.notes
-  //   }
+    //  let notes={
+    //  notes:results.notes
+    //   }
     res.json(results.notes)
     // res.render("index",notes);
   })
@@ -89,7 +89,6 @@ router.post("/saveNotes/:id", function (req, res) {
 
 // Deletes the specific article
 router.delete("/deleteArticle/:id", function (req, res) {
-  console.log("Entered the function");
   db.Article.findByIdAndDelete(req.params.id).then(function (result) {
     result.notes.forEach(element => {
       db.Notes.findOneAndDelete({ _id: element }).then(function (notesResult) {
@@ -125,5 +124,13 @@ function getArticles(req, res) {
     res.json(error);
   });
 }
+
+router.get("/clearArticles", function (req, res) {
+  db.Article.remove({}).then(function (results) {
+    db.Notes.remove({}).then(function(results){
+      res.redirect("/");
+    });
+  }).catch();
+});
 
 module.exports = router;
